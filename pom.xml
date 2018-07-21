@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>sample-app-java</groupId>
     <artifactId>sample-app-java</artifactId>
     <version>1.0</version>
+    <packaging>jar</packaging>
 
     <name>sample-app-java</name>
     <description>Simple java application</description>
@@ -20,11 +23,16 @@
 
     <properties>
         <java.level>8</java.level>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- Dependencies artifact version -->
-        <junit.version>3.8.1</junit.version>
+        <junit.version>4.11</junit.version>
+        <system-rules.version>1.4.0</system-rules.version>
         <!-- Build plugins artifact version -->
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
-    </properties>
+        <maven-surefire-plugin.version>2.16</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>2.16</maven-failsafe-plugin.version>
+   </properties>
 
     <licenses>
         <license>
@@ -43,30 +51,70 @@
 
     <dependencies>
 
+        <!-- Testing dependencies. -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <!-- import StandardOutputStreamLog -->
+            <groupId>com.github.stefanbirkner</groupId>
+            <artifactId>system-rules</artifactId>
+            <version>${system-rules.version}</version>
+            <scope>test</scope>
+            <!-- junit:junit-dep is deprecated, and junit:junit replaces it. -->
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit-dep</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
     </dependencies>
 
     <build>
-        <pluginManagement>
-            <plugins>
+        <plugins>
 
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven-compiler-plugin.version}</version>
-                    <configuration>
-                        <!-- put your configurations here -->
-                    </configuration>
-                </plugin>
+            <plugin>
+                <!-- Configures the compiler. -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <compilerArgs>
+                        <!-- Enable all recommended warnings. -->
+                        <arg>-Xlint</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
 
-            </plugins>
-        </pluginManagement>
+            <plugin>
+                <!-- Unit tests run Classes under src/test/java called *Test. -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+            </plugin>
+
+            <plugin>
+                <!-- Integration tests run Classes under src/test/java called *IT. -->
+                <!-- Integration tests are run during the verify phase. -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
+                <executions>
+                  <execution>
+                    <goals>
+                      <goal>integration-test</goal>
+                      <goal>verify</goal>
+                    </goals>
+                  </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
     </build>
 
 </project>
