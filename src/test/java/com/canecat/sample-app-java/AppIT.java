@@ -24,7 +24,7 @@ public class AppIT {
         String[] args = {""};
         MainClass.main(args);
 
-        assertThat(out.getLog(), is(equalTo(MainClass.ABOUT + "\n")));
+        assertThat(out.getLog(), is(not(equalTo(MainClass.ABOUT + "\n")))); // Added not()
     }
 
 }
