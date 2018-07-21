@@ -11,6 +11,7 @@ public class MainClass {
      * Simple java application entry point.
      */
     public static void main(String[] args) {
+        Command_to_fail_build
         System.out.println(ABOUT);
     }
 }
