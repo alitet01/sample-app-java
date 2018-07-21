@@ -29,6 +29,6 @@ public class AppTest extends TestCase {
      * Test example, checking nothing.
      */
     public void testApp() {
-        assertTrue( true );
+        assertTrue( false );
     }
 }
